@@ -45,9 +45,7 @@
 \NewDocumentCommand{\email}{m}{
   \def\res@email{#1}
 }
-\NewDocumentCommand{\formatphone}{m}{
-(\StrLeft{#1}{3}) \StrMid{#1}{4}{6}-\StrRight{#1}{4}
-}
+\NewDocumentCommand{\formatphone}{m}{(\StrLeft{#1}{3}) \StrMid{#1}{4}{6}-\StrRight{#1}{4}}
 \NewDocumentCommand\makephone{s}{
   \IfBooleanTF#1
   {\formatphone{\res@phone}}
@@ -71,9 +69,8 @@
     \begin{flushleft}
       \res@addra
     \end{flushleft}\columnbreak
-    \begin{center}
-      \res@makeemcol
-    \end{center}\columnbreak
+      {\centering\res@makeemcol\par}
+    \columnbreak
     \begin{flushright}
       \res@addrb
     \end{flushright}
