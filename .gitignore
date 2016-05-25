@@ -1,2 +1,6 @@
 auto/
 *~
+*.log
+*.aux
+*.pdf
+*.out
