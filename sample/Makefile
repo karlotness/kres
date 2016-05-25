@@ -17,5 +17,6 @@ $(thumb): $(doc)
 
 clean:
 	rm -f $(doc) *.log *.aux *.out
+	rm -rf auto
 
 .PHONY: clean all
