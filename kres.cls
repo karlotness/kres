@@ -124,7 +124,7 @@
 \NewDocumentEnvironment{entry}{mO{}O{}oo}
 {
   \outline{2}{#1}
-  \textbf{#1} {\small \textit{#3}} \hfill \textbf{#2}\par
+  \textbf{#1} {\small \textsl{#3}} \hfill \textbf{#2}\par
   \IfValueTF{#4}{
     \res@makesmallentryline{#4}{\IfValueT{#5}{#5}}
   }
