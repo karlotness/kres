@@ -109,7 +109,7 @@
   }
 }
 \RenewDocumentCommand{\section}{m}{
-  \vspace{0.5em}
+  \vspace{0.35em}
   \outline{1}{#1}
   {
     \parskip=0pt
@@ -123,7 +123,6 @@
 }
 \NewDocumentEnvironment{entry}{mO{}O{}oo}
 {
-  \vspace{0.05em}
   \outline{2}{#1}
   \textbf{#1} {\small \textit{#3}} \hfill \textbf{#2}\par
   \IfValueTF{#4}{
@@ -136,6 +135,7 @@
 }
 {
   \end{adjustwidth}\par
+  \vspace{0.1em}
 }
 \NewDocumentEnvironment{inlineentry}{m}
 {
@@ -144,7 +144,7 @@
   \hangindent=0.2in
   \textbf{#1:}
 }
-{\par}
+{\par\vspace{0.1em}}
 \NewDocumentCommand{\makepdfmeta}{}{
   \hypersetup
   {
