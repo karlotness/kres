@@ -149,6 +149,6 @@
   \hypersetup
   {
     pdfauthor={\res@name},
-    pdftitle={\res@name\ Resume}
+    pdftitle={\res@name\ R\'esum\'e}
   }
 }
