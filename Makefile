@@ -10,6 +10,10 @@ kres.pdf: kres.dtx
 kres.cls: kres.ins kres.dtx
 	$(TEX) $<
 
+install: kres.cls
+	install -D -m 640 $< \
+	$(shell kpsexpand '$$TEXMFHOME')/tex/latex/kres.cls
+
 sweep:
 	rm -f *.{log,aux,out,glo,hd,idx,fdb_latexmk,fls,ilg,ind}
 
@@ -17,4 +21,4 @@ clean: sweep
 	rm -f *.{pdf,cls,tex}
 	rm -rf auto/
 
-.PHONY: all sweep clean
+.PHONY: all install sweep clean
