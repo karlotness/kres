@@ -1,13 +1,11 @@
 # kres LaTeX Template
 
-![KRes Preview](./sample/JQPResume-thumb.png)
-
-This repository contains the LaTeX class files that I use to format my resume. A sample resume source file is included in the `sample/` directory.
-
-You can view a preview image [here](./sample/JQPResume.png).
+This repository contains the LaTeX class files that I use to format my
+resume.
 
 ## Dependencies
-This class file is designed to work under a TeXLive distribution. It depends on:
+This class file is designed to work under a TeXLive distribution. It
+depends on:
 
 - `article`
 - `fontenc`
@@ -21,4 +19,5 @@ This class file is designed to work under a TeXLive distribution. It depends on:
 - `xparse`
 - `ifthen`
 
-All of these packages should be included in a standard TeXLive distribution.
+All of these packages should be included in a standard TeXLive
+distribution.
