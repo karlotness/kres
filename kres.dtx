@@ -264,9 +264,7 @@
 % relatively simple. It separates the string into groups of three,
 % three and four characters and inserts punctuation.
 %    \begin{macrocode}
-\NewDocumentCommand{\formatphone}{m}{
-  (\StrLeft{#1}{3})~\StrMid{#1}{4}{6}-\StrRight{#1}{4}
-}
+\NewDocumentCommand{\formatphone}{m}{(\StrLeft{#1}{3}) \StrMid{#1}{4}{6}-\StrRight{#1}{4}}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -426,6 +424,7 @@
 %    \begin{macrocode}
 \NewDocumentCommand{\res@makesmallentryline}{mm}{
   {\small \textbf{#1} \hfill \textbf{#2}\par}
+}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -468,6 +467,7 @@
   \hangindent=0.2in
   \textbf{#1:}
 }
+{\par\vspace{0.1em}}
 %    \end{macrocode}
 % \end{environment}
 %
