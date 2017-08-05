@@ -8,3 +8,7 @@ auto/
 *.glo
 *.hd
 *.idx
+*.fdb_latexmk
+*.fls
+*.ilg
+*.ind
