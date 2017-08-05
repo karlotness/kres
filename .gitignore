@@ -4,3 +4,7 @@ auto/
 *.aux
 *.pdf
 *.out
+*.cls
+*.glo
+*.hd
+*.idx
