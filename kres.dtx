@@ -186,12 +186,12 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % \begin{macro}{\email}
 % Next, we define the macros used to store the author's contact
 % information. In general, these macros store this information in
-% other internal macros using the |res@| prefix.
+% other internal macros using the |kres@| prefix.
 %    \begin{macrocode}
-\NewDocumentCommand{\name}{m}{\def\res@name{#1}}
+\NewDocumentCommand{\name}{m}{\def\kres@name{#1}}
 \RenewDocumentCommand{\author}{}{\name}
-\NewDocumentCommand{\phone}{m}{\def\res@phone{#1}}
-\NewDocumentCommand{\email}{m}{\def\res@email{#1}}
+\NewDocumentCommand{\phone}{m}{\def\kres@phone{#1}}
+\NewDocumentCommand{\email}{m}{\def\kres@email{#1}}
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -203,7 +203,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % multiple times we need to track the number of invocations and store
 % the addresses into different macros. To do this we create a counter.
 %    \begin{macrocode}
-\newcounter{res@numaddress}
+\newcounter{kres@numaddress}
 %    \end{macrocode}
 % After storing an address we will step this counter. The |\address|
 % macro checks the value of this counter and uses it to choose one of
@@ -211,18 +211,18 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % large an error is issued.
 %    \begin{macrocode}
 \NewDocumentCommand{\address}{m}{
-  \ifthenelse{\value{res@numaddress} = 0}{
-    \def\res@addra{#1}
+  \ifthenelse{\value{kres@numaddress} = 0}{
+    \def\kres@addra{#1}
   }
   {
-    \ifthenelse{\value{res@numaddress} = 1}{
-      \def\res@addrb{#1}
+    \ifthenelse{\value{kres@numaddress} = 1}{
+      \def\kres@addrb{#1}
     }
     {
       \ClassError{kres}{Too many addresses}{At most two addresses may be specified}
     }
   }
-  \stepcounter{res@numaddress}
+  \stepcounter{kres@numaddress}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -234,8 +234,8 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 \NewDocumentCommand{\makepdfmeta}{}{
   \hypersetup
   {
-    pdfauthor={\res@name},
-    pdftitle={\res@name\ R\'esum\'e}
+    pdfauthor={\kres@name},
+    pdftitle={\kres@name\ R\'esum\'e}
   }
 }
 %    \end{macrocode}
@@ -248,7 +248,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % font.
 %    \begin{macrocode}
 \NewDocumentCommand{\makename}{}{
-  {\centering\Large\textsc{\textbf{\res@name}}\par\vspace{0.15em}}
+  {\centering\Large\textsc{\textbf{\kres@name}}\par\vspace{0.15em}}
 }
 \RenewDocumentCommand{\maketitle}{}{\makename}
 %    \end{macrocode}
@@ -279,13 +279,13 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 %    \begin{macrocode}
 \NewDocumentCommand\makephone{s}{
   \IfBooleanTF#1
-  {\formatphone{\res@phone}}
-  {\href{tel:\res@phone}{\formatphone{\res@phone}}}
+  {\formatphone{\kres@phone}}
+  {\href{tel:\kres@phone}{\formatphone{\kres@phone}}}
 }
 \NewDocumentCommand\makeemail{s}{
   \IfBooleanTF#1
-  {\res@email}
-  {\href{mailto:\res@email}{\res@email}}
+  {\kres@email}
+  {\href{mailto:\kres@email}{\kres@email}}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -296,22 +296,22 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % on the document setup. Though the contact formats vary they have
 % some common elements which we implement as macros.
 %
-% \begin{macro}{\res@mkctactoln}
+% \begin{macro}{\kres@mkctactoln}
 % First, a macro which simply adds the contact information section as
 % a PDF bookmark with title ``Contact.''
 %    \begin{macrocode}
-\NewDocumentCommand{\res@mkctactoln}{}{\outline{1}{Contact}}
+\NewDocumentCommand{\kres@mkctactoln}{}{\outline{1}{Contact}}
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\res@makeemcol}
+% \begin{macro}{\kres@makeemcol}
 % Next, a macro which produces a column of text with the author's
 % phone number and email.
 %    \begin{macrocode}
-\NewDocumentCommand{\res@makeemcol}{}{
-  \ifthenelse{\isundefined{\res@phone}}
+\NewDocumentCommand{\kres@makeemcol}{}{
+  \ifthenelse{\isundefined{\kres@phone}}
   {}{\makephone\\}
-  \ifthenelse{\isundefined{\res@email}}
+  \ifthenelse{\isundefined{\kres@email}}
   {}{\makeemail}
 }
 %    \end{macrocode}
@@ -321,54 +321,54 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % formats. We refer to them by their number of columns: single, double
 % and triple.
 %
-% \begin{macro}{\res@triplectact}
+% \begin{macro}{\kres@triplectact}
 % First, we define the ``triple'' contact block. It defines three
 % columns with the author's contact information. The columns have
 % different alignments.
 %    \begin{macrocode}
-\NewDocumentCommand{\res@triplectact}{}{
-  \res@mkctactoln
+\NewDocumentCommand{\kres@triplectact}{}{
+  \kres@mkctactoln
   \begin{multicols}{3}
     \begin{flushleft}
-      \res@addra
+      \kres@addra
     \end{flushleft}\columnbreak
-      {\centering\res@makeemcol\par}
+      {\centering\kres@makeemcol\par}
     \columnbreak
     \begin{flushright}
-      \res@addrb
+      \kres@addrb
     \end{flushright}
   \end{multicols}
 }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\res@doublectact}
+% \begin{macro}{\kres@doublectact}
 % Next, we define the ``double'' contact block. It uses two
 % columns. One for the author's (single) address and the other for
 % phone numbers and emails.
 %    \begin{macrocode}
-\NewDocumentCommand{\res@doublectact}{}{
-  \res@mkctactoln
+\NewDocumentCommand{\kres@doublectact}{}{
+  \kres@mkctactoln
   \begin{multicols}{2}
     \begin{flushleft}
-      \res@addra
+      \kres@addra
     \end{flushleft}\columnbreak
     \begin{flushright}
-      \res@makeemcol
+      \kres@makeemcol
     \end{flushright}\columnbreak
   \end{multicols}
 }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\res@singlectact}
+% \begin{macro}{\kres@singlectact}
 % Finally we define the ``single'' contact layout. It produces a
 % centered column with the author's email address and phone number.
 %    \begin{macrocode}
-\NewDocumentCommand{\res@singlectact}{}{
-  \res@mkctactoln
+\NewDocumentCommand{\kres@singlectact}{}{
+  \kres@mkctactoln
   {\centering
-    \res@makeemcol\par
+    \kres@makeemcol\par
   }
 }
 %    \end{macrocode}
@@ -376,19 +376,19 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 %
 % \begin{macro}{\makecontact}
 % With these we can define the |\makecontact| macro. This macro
-% reads the value of |res@numaddress| and uses it to select the
+% reads the value of |kres@numaddress| and uses it to select the
 % format of the contact information block.
 %    \begin{macrocode}
 \NewDocumentCommand{\makecontact}{}{
-  \ifthenelse{\value{res@numaddress} = 0}
-  {\res@singlectact}
+  \ifthenelse{\value{kres@numaddress} = 0}
+  {\kres@singlectact}
   {
-    \ifthenelse{\value{res@numaddress} = 1}
-    {\res@doublectact}
+    \ifthenelse{\value{kres@numaddress} = 1}
+    {\kres@doublectact}
     {
-      \ifthenelse{\value{res@numaddress} = 2}
+      \ifthenelse{\value{kres@numaddress} = 2}
       {
-        \res@triplectact
+        \kres@triplectact
       }
       {\ClassError{kres}{Too many addresses}{At most two addresses may be specified}}
     }
@@ -416,7 +416,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\res@smalleline}
+% \begin{macro}{\kres@smalleline}
 % Next, we define the |entry| environment. Just as with the
 % |\makecontact|, this environment changes its composition
 % conditionally based on other parts of the document. To help with its
@@ -424,7 +424,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % line into its own macro. This macro takes the last two arguments to
 % |entry| and places them on their own line in small font.
 %    \begin{macrocode}
-\NewDocumentCommand{\res@smalleline}{mm}{
+\NewDocumentCommand{\kres@smalleline}{mm}{
   {\small \textbf{#1} \hfill \textbf{#2}\par}
 }
 %    \end{macrocode}
@@ -443,10 +443,10 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
   \outline{2}{#1}
   \textbf{#1} {\small \textsl{#3}} \hfill \textbf{#2}\par
   \IfValueTF{#4}{
-    \res@smalleline{#4}{\IfValueT{#5}{#5}}
+    \kres@smalleline{#4}{\IfValueT{#5}{#5}}
   }
   {
-    \IfValueT{#5}{\res@smalleline{\IfValueT{#4}{#4}}{#5}}
+    \IfValueT{#5}{\kres@smalleline{\IfValueT{#4}{#4}}{#5}}
   }
   \begin{adjustwidth}{0.2in}{}
 }
