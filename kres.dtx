@@ -17,7 +17,7 @@
 \documentclass{ltxdoc}
 \usepackage[T1]{fontenc}
 \usepackage{microtype}
-\usepackage[letterpaper,margin=1in,nohead]{geometry}
+\usepackage[letterpaper,margin=1.25in,nohead]{geometry}
 \usepackage[numbered]{hypdoc}
 
 \EnableCrossrefs
@@ -30,21 +30,116 @@
 % \fi
 % \GetFileInfo{kres.dtx}
 %
-% \title{\textsf{kres} --- A simple r\'esum\'e class\thanks{Version
+% \title{\textsf{kres} --- A simple resume class\thanks{Version
 % \fileversion, dated \filedate.}}
 % \author{Karl Otness}
 %
 % \maketitle
 %
-% \begin{abstract}
-%   Test abstract.
-% \end{abstract}
-%
 % \section{Usage}
-% \DescribeEnv{test}
-% I can describe the enviornment here
+% \textsf{kres} does not support any class options. Use it with
+% |\documentclass{kres}|.
 %
-% And more desc here
+% \subsection{Setup Commands}
+% Before writing the resume contents, some basic information on the
+% author must be set. The following macros should be used in the
+% document preamble before opening the body of the document. Macros in
+% this section store information about the author to be used later
+% within the body.
+%
+% \DescribeMacro\name
+% \DescribeMacro\author
+% |\name|\marg{author name} and |\author|\marg{author name} store
+% \meta{author name} to be typeset at the top of the resume when
+% |\makename| or |\maketitle| are used.
+%
+% \DescribeMacro\address
+% |\address|\marg{address} stores \meta{address} as one of the
+% author's contact addresses. This macro may be used up to
+% \emph{twice} to set multiple contact addresses (for instance school
+% and home). Line breaks in the address may be added with |\\|.
+%
+% \DescribeMacro\phone
+% |\phone|\marg{number} stores the author's phone number. The number
+% will be automatically formatted and should be entered as a string of
+% ten digits with no spaces or other punctuation.
+%
+% \DescribeMacro\email
+% |\email|\marg{email} stores an email address. Some special
+% characters (underscores, etc.) may need to be escaped.
+%
+% \DescribeMacro\makepdfmeta
+% |\makepdfmeta| outputs metadata to the generated PDF resume. The
+% command must be issued after all of the author-contact information
+% has been set (with |\name|, |\address|, |\phone| and |\email|).
+%
+% \subsection{Contact Information}
+% After opening the body of the document, the heading should be
+% added. This section contains the author's name and contact
+% information.
+%
+% \DescribeMacro\makename
+% \DescribeMacro\maketitle
+% |\makename| and |\maketitle| print the authors name, centered, in a
+% large font. The |\maketitle| macro is redefined for this purpose for
+% convenience for \LaTeX{} users who find this more familiar.
+%
+% \DescribeMacro\makecontact
+% Used with no argument to produce a block containing the author's
+% contact information. This block will use anywhere from one to three
+% columns depending on how many addresses were specified during
+% document setup (with |\address|). In all cases, the author's email
+% address and telephone numbers are rendered in PDF as clickable
+% links.
+%
+% If no addresses were specified, |\makecontact| produces a single
+% centered column with the author's email address and phone
+% number. With one address, two columns are created with the address
+% on the left and, the email and phone number on the right. With two
+% mailing addresses, the phone number and email are again in the
+% center with the two addresses on the left and the right. The first
+% address specified is placed in the left column.
+%
+% \subsection{Contents}
+% After the contact information is typeset, the resume contents may be
+% added. The contents can be divided into sections to separate
+% different categories of information.
+%
+% \DescribeMacro\section
+% |\section|\marg{name} Creates a new section in the document taking
+% its title from \meta{name}. These sections are also added to the PDF
+% bookmarks using \meta{name} as the bookmark title.
+%
+% Resume entries are created using one of two environments: |\entry|
+% and |\inlineentry|. These environments differ in the arguments they
+% accept and in the format used to present their contents.
+%
+% \DescribeEnv{entry}
+% The entry environment accepts many arguments which specify the
+% information which will be presented. Usage:
+% |entry|\marg{title}\oarg{secondary}\oarg{note}\oarg{left}\oarg{right}.
+% Most arguments are optional and if omitted the information will
+% simply not appear. To use a later argument without an earlier one,
+% empty brackets must be inserted (|[]|) to leave an empty value for
+% the skipped option. The contents of the |entry| environment are
+% placed as text in the body of the resume entry.
+%
+% \meta{title} is used as the title of the entry. It is presented
+% first in the resume line. The text provided for \meta{secondary} is
+% placed on the right side of the same line as \meta{title}. If
+% specified, \meta{note} is written in small, slanted font immediately
+% following \meta{title}.
+%
+% The values for \meta{left} and \meta{right} both appear in smaller
+% font on a second line following \meta{title}. They are placed on the
+% left and right side of this line, respectively.
+%
+% \DescribeEnv{inlineentry}
+% Usage: |inlineentry|\marg{title}. The |inlineentry| environment
+% takes a single mandatory argument which is used as the title of the
+% entry. The body of this environment is placed on the same line as
+% the title. Inline entries are best kept short, ideally a single
+% line.
 %
 % \section{License}
 % \input{LICENSE.txt}
