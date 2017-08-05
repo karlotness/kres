@@ -17,7 +17,9 @@
 \documentclass{ltxdoc}
 \usepackage[T1]{fontenc}
 \usepackage{microtype}
-\usepackage[letterpaper,margin=1.25in,nohead]{geometry}
+\usepackage[letterpaper,%
+left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
+{geometry}
 \usepackage[numbered]{hypdoc}
 
 \EnableCrossrefs
@@ -294,11 +296,11 @@
 % on the document setup. Though the contact formats vary they have
 % some common elements which we implement as macros.
 %
-% \begin{macro}{\res@makecontactoutline}
+% \begin{macro}{\res@mkctactoln}
 % First, a macro which simply adds the contact information section as
 % a PDF bookmark with title ``Contact.''
 %    \begin{macrocode}
-\NewDocumentCommand{\res@makecontactoutline}{}{\outline{1}{Contact}}
+\NewDocumentCommand{\res@mkctactoln}{}{\outline{1}{Contact}}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -319,13 +321,13 @@
 % formats. We refer to them by their number of columns: single, double
 % and triple.
 %
-% \begin{macro}{\res@maketriplecontact}
+% \begin{macro}{\res@triplectact}
 % First, we define the ``triple'' contact block. It defines three
 % columns with the author's contact information. The columns have
 % different alignments.
 %    \begin{macrocode}
-\NewDocumentCommand{\res@maketriplecontact}{}{
-  \res@makecontactoutline
+\NewDocumentCommand{\res@triplectact}{}{
+  \res@mkctactoln
   \begin{multicols}{3}
     \begin{flushleft}
       \res@addra
@@ -340,13 +342,13 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\res@makedoublecontact}
+% \begin{macro}{\res@doublectact}
 % Next, we define the ``double'' contact block. It uses two
 % columns. One for the author's (single) address and the other for
 % phone numbers and emails.
 %    \begin{macrocode}
-\NewDocumentCommand{\res@makedoublecontact}{}{
-  \res@makecontactoutline
+\NewDocumentCommand{\res@doublectact}{}{
+  \res@mkctactoln
   \begin{multicols}{2}
     \begin{flushleft}
       \res@addra
@@ -359,12 +361,12 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\res@makesinglecontact}
+% \begin{macro}{\res@singlectact}
 % Finally we define the ``single'' contact layout. It produces a
 % centered column with the author's email address and phone number.
 %    \begin{macrocode}
-\NewDocumentCommand{\res@makesinglecontact}{}{
-  \res@makecontactoutline
+\NewDocumentCommand{\res@singlectact}{}{
+  \res@mkctactoln
   {\centering
     \res@makeemcol\par
   }
@@ -379,14 +381,14 @@
 %    \begin{macrocode}
 \NewDocumentCommand{\makecontact}{}{
   \ifthenelse{\value{res@numaddress} = 0}
-  {\res@makesinglecontact}
+  {\res@singlectact}
   {
     \ifthenelse{\value{res@numaddress} = 1}
-    {\res@makedoublecontact}
+    {\res@doublectact}
     {
       \ifthenelse{\value{res@numaddress} = 2}
       {
-        \res@maketriplecontact
+        \res@triplectact
       }
       {\ClassError{kres}{Too many addresses}{At most two addresses may be specified}}
     }
@@ -414,7 +416,7 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\res@makesmallentryline}
+% \begin{macro}{\res@smalleline}
 % Next, we define the |entry| environment. Just as with the
 % |\makecontact|, this environment changes its composition
 % conditionally based on other parts of the document. To help with its
@@ -422,7 +424,7 @@
 % line into its own macro. This macro takes the last two arguments to
 % |entry| and places them on their own line in small font.
 %    \begin{macrocode}
-\NewDocumentCommand{\res@makesmallentryline}{mm}{
+\NewDocumentCommand{\res@smalleline}{mm}{
   {\small \textbf{#1} \hfill \textbf{#2}\par}
 }
 %    \end{macrocode}
@@ -441,10 +443,10 @@
   \outline{2}{#1}
   \textbf{#1} {\small \textsl{#3}} \hfill \textbf{#2}\par
   \IfValueTF{#4}{
-    \res@makesmallentryline{#4}{\IfValueT{#5}{#5}}
+    \res@smalleline{#4}{\IfValueT{#5}{#5}}
   }
   {
-    \IfValueT{#5}{\res@makesmallentryline{\IfValueT{#4}{#4}}{#5}}
+    \IfValueT{#5}{\res@smalleline{\IfValueT{#4}{#4}}{#5}}
   }
   \begin{adjustwidth}{0.2in}{}
 }
