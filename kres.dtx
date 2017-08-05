@@ -1,0 +1,58 @@
+% \iffalse meta-comment
+% Copyright (c) 2017 Karl Otness
+%
+% See LICENSE.txt for license information.
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{kres.dtx}
+%</driver>
+%<class> \NeedsTeXFormat{LaTeX2e}
+%<class> \ProvidesClass{kres}
+%<*class>
+[2017/08/05 v0.1 Karl Resume]
+%</class>
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage[letterpaper,margin=1in,nohead]{geometry}
+\usepackage[numbered]{hypdoc}
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{kres.dtx}
+\end{document}
+%</driver>
+% \fi
+% \GetFileInfo{kres.dtx}
+%
+% \title{\textsf{kres} --- A simple r\'esum\'e class\thanks{Version
+% \fileversion, dated \filedate.}}
+% \author{Karl Otness}
+%
+% \maketitle
+%
+% \begin{abstract}
+%   Test abstract.
+% \end{abstract}
+%
+% \section{Usage}
+% \DescribeEnv{test}
+% I can describe the enviornment here
+%
+% And more desc here
+%
+% \section{License}
+% \input{LICENSE.txt}
+%
+% \Finale
+
+\endinput
+% Local Variables:
+% mode: doctex
+% TeX-master: t
+% End:
