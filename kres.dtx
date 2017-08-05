@@ -141,6 +141,336 @@
 % the title. Inline entries are best kept short, ideally a single
 % line.
 %
+% \section{Implementation}
+% \subsection{Class Configuration}
+% In this section we present the implementation of \textsf{kres}. We
+% begin by loading our dependencies and processing options. We
+% piggyback on the |article| class to set up \LaTeX{}. This is,
+% however, an implementation detail. Users of this class should
+% restrict themselves to the interface documented here and to standard
+% \LaTeX{} macros.
+%    \begin{macrocode}
+\DeclareOption*{
+  \ClassWarning{kres}{Unknown option '\CurrentOption'}
+}
+\ProcessOptions\relax
+
+\LoadClass[letterpaper, 11pt]{article}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{navigator, libertine, multicol, microtype}
+\RequirePackage{xstring, changepage, xparse, ifthen}
+%    \end{macrocode}
+%
+% Next, we set some of the basic lengths. Currently we set several
+% lengths to zero and then re-add them in our macros.
+%    \begin{macrocode}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\multicolsep}{0pt}
+\setlength{\partopsep}{0pt}
+%    \end{macrocode}
+%
+% We also disable page numbering. Resumes are generally one page so
+% the numbers are unnecessary.
+%    \begin{macrocode}
+\pagenumbering{gobble}
+%    \end{macrocode}
+%
+% \subsection{Author Information}
+% \begin{macro}{\name}
+% \begin{macro}{\author}
+% \begin{macro}{\phone}
+% \begin{macro}{\email}
+% Next, we define the macros used to store the author's contact
+% information. In general, these macros store this information in
+% other internal macros using the |res@| prefix.
+%    \begin{macrocode}
+\NewDocumentCommand{\name}{m}{\def\res@name{#1}}
+\RenewDocumentCommand{\author}{}{\name}
+\NewDocumentCommand{\phone}{m}{\def\res@phone{#1}}
+\NewDocumentCommand{\email}{m}{\def\res@email{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\address}
+% The |\address| macro is more complicated. Because it can be used
+% multiple times we need to track the number of invocations and store
+% the addresses into different macros. To do this we create a counter.
+%    \begin{macrocode}
+\newcounter{res@numaddress}
+%    \end{macrocode}
+% After storing an address we will step this counter. The |\address|
+% macro checks the value of this counter and uses it to choose one of
+% two macros to store the address text. If the counter value is too
+% large an error is issued.
+%    \begin{macrocode}
+\NewDocumentCommand{\address}{m}{
+  \ifthenelse{\value{res@numaddress} = 0}{
+    \def\res@addra{#1}
+  }
+  {
+    \ifthenelse{\value{res@numaddress} = 1}{
+      \def\res@addrb{#1}
+    }
+    {
+      \ClassError{kres}{Too many addresses}{At most two addresses may be specified}
+    }
+  }
+  \stepcounter{res@numaddress}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\makepdfmeta}
+% Before starting the document, we want to write out PDF metadata. The
+% following macro writes the author and resume title to the PDF file.
+%    \begin{macrocode}
+\NewDocumentCommand{\makepdfmeta}{}{
+  \hypersetup
+  {
+    pdfauthor={\res@name},
+    pdftitle={\res@name\ R\'esum\'e}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\makename}
+% \begin{macro}{\maketitle}
+% Then, to typeset this information we specify several macros. The
+% first simply retrieves the author's name and writes it in a large
+% font.
+%    \begin{macrocode}
+\NewDocumentCommand{\makename}{}{
+  {\centering\Large\textsc{\textbf{\res@name}}\par\vspace{0.15em}}
+}
+\RenewDocumentCommand{\maketitle}{}{\makename}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% We will soon be defining the macros which produce the resume title
+% block with the author's contact information. This block will include
+% automatically formatted data and some hyperlinks. To accomplish this
+% we will define several macros which will format phone numbers and
+% add hyperlinks to emails.
+%
+% \begin{macro}{\formatphone}
+% We start with a macro to format phone numbers. This macro is
+% relatively simple. It separates the string into groups of three,
+% three and four characters and inserts punctuation.
+%    \begin{macrocode}
+\NewDocumentCommand{\formatphone}{m}{
+  (\StrLeft{#1}{3})~\StrMid{#1}{4}{6}-\StrRight{#1}{4}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\makephone}
+% \begin{macro}{\makeemail}
+% Next, we specify macros to write out the author's phone number and
+% email. Both of these macros come in starred and un-starred
+% variants. Without a star, the macro will produce clickable
+% hyperlinks. Adding a star suppresses the hyperlinks.
+%    \begin{macrocode}
+\NewDocumentCommand\makephone{s}{
+  \IfBooleanTF#1
+  {\formatphone{\res@phone}}
+  {\href{tel:\res@phone}{\formatphone{\res@phone}}}
+}
+\NewDocumentCommand\makeemail{s}{
+  \IfBooleanTF#1
+  {\res@email}
+  {\href{mailto:\res@email}{\res@email}}
+}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% The macro for writing the author's contact information is
+% complicated and produces output in one of several formats depending
+% on the document setup. Though the contact formats vary they have
+% some common elements which we implement as macros.
+%
+% \begin{macro}{\res@makecontactoutline}
+% First, a macro which simply adds the contact information section as
+% a PDF bookmark with title ``Contact.''
+%    \begin{macrocode}
+\NewDocumentCommand{\res@makecontactoutline}{}{\outline{1}{Contact}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\res@makeemcol}
+% Next, a macro which produces a column of text with the author's
+% phone number and email.
+%    \begin{macrocode}
+\NewDocumentCommand{\res@makeemcol}{}{
+  \ifthenelse{\isundefined{\res@phone}}
+  {}{\makephone\\}
+  \ifthenelse{\isundefined{\res@email}}
+  {}{\makeemail}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% Now we define macros for each of the three possible contact block
+% formats. We refer to them by their number of columns: single, double
+% and triple.
+%
+% \begin{macro}{\res@maketriplecontact}
+% First, we define the ``triple'' contact block. It defines three
+% columns with the author's contact information. The columns have
+% different alignments.
+%    \begin{macrocode}
+\NewDocumentCommand{\res@maketriplecontact}{}{
+  \res@makecontactoutline
+  \begin{multicols}{3}
+    \begin{flushleft}
+      \res@addra
+    \end{flushleft}\columnbreak
+      {\centering\res@makeemcol\par}
+    \columnbreak
+    \begin{flushright}
+      \res@addrb
+    \end{flushright}
+  \end{multicols}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\res@makedoublecontact}
+% Next, we define the ``double'' contact block. It uses two
+% columns. One for the author's (single) address and the other for
+% phone numbers and emails.
+%    \begin{macrocode}
+\NewDocumentCommand{\res@makedoublecontact}{}{
+  \res@makecontactoutline
+  \begin{multicols}{2}
+    \begin{flushleft}
+      \res@addra
+    \end{flushleft}\columnbreak
+    \begin{flushright}
+      \res@makeemcol
+    \end{flushright}\columnbreak
+  \end{multicols}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\res@makesinglecontact}
+% Finally we define the ``single'' contact layout. It produces a
+% centered column with the author's email address and phone number.
+%    \begin{macrocode}
+\NewDocumentCommand{\res@makesinglecontact}{}{
+  \res@makecontactoutline
+  {\centering
+    \res@makeemcol\par
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\makecontact}
+% With these we can define the |\makecontact| macro. This macro
+% reads the value of |res@numaddress| and uses it to select the
+% format of the contact information block.
+%    \begin{macrocode}
+\NewDocumentCommand{\makecontact}{}{
+  \ifthenelse{\value{res@numaddress} = 0}
+  {\res@makesinglecontact}
+  {
+    \ifthenelse{\value{res@numaddress} = 1}
+    {\res@makedoublecontact}
+    {
+      \ifthenelse{\value{res@numaddress} = 2}
+      {
+        \res@maketriplecontact
+      }
+      {\ClassError{kres}{Too many addresses}{At most two addresses may be specified}}
+    }
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Contents}
+% \begin{macro}{\section}
+% We define several macros and environments used to writing the resume
+% contents. The first of these creates a new section in the resume and
+% adds it to the PDF bookmarks.
+%    \begin{macrocode}
+\RenewDocumentCommand{\section}{m}{
+  \vspace{0.35em}
+  \outline{1}{#1}
+  {
+    \parskip=0pt
+    \large\textsc{\textbf{#1}}\par
+    \vspace{0.15em}\nointerlineskip\rule{\textwidth}{0.7pt}
+    \par
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\res@makesmallentryline}
+% Next, we define the |entry| environment. Just as with the
+% |\makecontact|, this environment changes its composition
+% conditionally based on other parts of the document. To help with its
+% definition, we separate out the construction of the second entry
+% line into its own macro. This macro takes the last two arguments to
+% |entry| and places them on their own line in small font.
+%    \begin{macrocode}
+\NewDocumentCommand{\res@makesmallentryline}{mm}{
+  {\small \textbf{#1} \hfill \textbf{#2}\par}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{entry}
+% With this we can define the |entry| environment. This
+% environment positions its five arguments into their respective
+% positions and produces a second line if necessary. Only the first
+% argument (the title) is mandatory. The others are optional and
+% default to empty. This argument also adds a second-level PDF
+% bookmark for the resume entry.
+%    \begin{macrocode}
+\NewDocumentEnvironment{entry}{mO{}O{}oo}
+{
+  \outline{2}{#1}
+  \textbf{#1} {\small \textsl{#3}} \hfill \textbf{#2}\par
+  \IfValueTF{#4}{
+    \res@makesmallentryline{#4}{\IfValueT{#5}{#5}}
+  }
+  {
+    \IfValueT{#5}{\res@makesmallentryline{\IfValueT{#4}{#4}}{#5}}
+  }
+  \begin{adjustwidth}{0.2in}{}
+}
+{
+  \end{adjustwidth}\par
+  \vspace{0.1em}
+}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{inlineentry}
+% We also define a much simpler |inlineentry| environment. This
+% environment takes a single argument, a title. It writes the title in
+% bold followed the body of the environment on the same line.
+%    \begin{macrocode}
+\NewDocumentEnvironment{inlineentry}{m}
+{
+  \vspace{0.05em}
+  \outline{2}{#1}
+  \hangindent=0.2in
+  \textbf{#1:}
+}
+%    \end{macrocode}
+% \end{environment}
+%
 % \section{License}
 % \input{LICENSE.txt}
 %
