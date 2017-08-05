@@ -1,4 +1,4 @@
-# KRes LaTeX Template
+# kres LaTeX Template
 
 ![KRes Preview](./sample/JQPResume-thumb.png)
 
