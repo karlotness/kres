@@ -70,11 +70,6 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % |\email|\marg{email} stores an email address. Some special
 % characters (underscores, etc.) may need to be escaped.
 %
-% \DescribeMacro\makepdfmeta
-% |\makepdfmeta| outputs metadata to the generated PDF resume. The
-% command must be issued after all of the author-contact information
-% has been set (with |\name|, |\address|, |\phone| and |\email|).
-%
 % \subsection{Contact Information}
 % After opening the body of the document, the heading should be
 % added. This section contains the author's name and contact
@@ -227,17 +222,19 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\makepdfmeta}
+% \begin{macro}{\kres@pdfmeta}
 % Before starting the document, we want to write out PDF metadata. The
 % following macro writes the author and resume title to the PDF file.
+% We then add it to the |\AtBeginDocument| hook.
 %    \begin{macrocode}
-\NewDocumentCommand{\makepdfmeta}{}{
+\NewDocumentCommand{\kres@pdfmeta}{}{
   \hypersetup
   {
     pdfauthor={\kres@name},
     pdftitle={\kres@name\ R\'esum\'e}
   }
 }
+\AtBeginDocument{\kres@pdfmeta}
 %    \end{macrocode}
 % \end{macro}
 %
