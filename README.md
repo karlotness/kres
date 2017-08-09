@@ -1,21 +1,25 @@
 # kres LaTeX Template
 
 This repository contains the LaTeX class files that I use to format my
-resume. The `.cls` file and the documentation PDF are built with
-`make`. If the Makefile is not included, build the `.cls` file by
-running TeX on kres.ins and build the documentation by running
-`pdflatex` on kres.dtx.
+resume. Consult the PDF documentation for usage information.
 
-`make install` will place the generated class file under `TEXMFHOME`.
+# Building
+If the Makefile was included with this package all files can be built
+with `make`. The command `make install` will place the generated class
+file under `TEXMFHOME`.
 
-This project is under the MIT license. See LICENSE.txt, if included,
-for the license text. If this file is not included see the text of the
-PDF documentation for this class (kres.pdf).
+If the Makefile was not included the required files can be built
+manually.  Build the `.cls` file by running TeX on kres.ins and build
+the documentation by running `pdflatex` on kres.dtx.
 
-## Dependencies
+# License
+This project is under the MIT license. The license text is included in
+each of the source files, in the PDF documentation for this class, and
+in LICENSE.txt (if this file is present).
+
+# Dependencies
 This class file is designed to work under a TeXLive distribution. It
 depends on:
-
 - `article`
 - `fontenc`
 - `hyperref`
