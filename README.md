@@ -31,6 +31,7 @@ depends on:
 - `changepage`
 - `xparse`
 - `ifthen`
+- `luatex85`
 
 All of these packages should be included in a standard TeXLive
 distribution.
