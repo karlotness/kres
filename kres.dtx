@@ -162,7 +162,8 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % piggyback on the |article| class to set up \LaTeX{}. This is,
 % however, an implementation detail. Users of this class should
 % restrict themselves to the interface documented here and to standard
-% \LaTeX{} macros.
+% \LaTeX{} macros. If we are compiling with the Lua\TeX{} engine, we
+% load |luatex85| to fix incompatibilities in the navigator package.
 %    \begin{macrocode}
 \DeclareOption*{
   \ClassWarning{kres}{Unknown option '\CurrentOption'}
@@ -170,6 +171,11 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 \ProcessOptions\relax
 
 \LoadClass[letterpaper, 11pt]{article}
+\RequirePackage{iftex}
+\ifLuaTeX
+\RequirePackage{luatex85}
+\else
+\fi
 \RequirePackage[T1]{fontenc}
 \RequirePackage[hidelinks]{hyperref}
 \RequirePackage{navigator, libertine, multicol, microtype}
