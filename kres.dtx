@@ -363,20 +363,29 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % \end{macro}
 %
 % \begin{macro}{\kres@doublectact}
-% Next, we define the ``double'' contact block. It uses two
-% columns. One for the author's (single) address and the other for
-% phone numbers and emails.
+% Next, we define the ``double'' contact block. It produces a single,
+% centered column containing the address, email, and phone number.
+% Line breaks in the address are replaced with bullets. We use a bit
+% of a hack to do this by redefining |\\| to insert the bullet rather
+% than a line break.
 %    \begin{macrocode}
 \NewDocumentCommand{\kres@doublectact}{}{
+  \NewDocumentCommand{\kres@defbul}{}%
+  {\RenewDocumentCommand{\\}{}{\ \textbullet\ }}
   \kres@mkctactoln
-  \begin{multicols}{2}
-    \begin{flushleft}
+  {
+    \centering
+    {
+      \kres@defbul
       \kres@addra
-    \end{flushleft}\columnbreak
-    \begin{flushright}
+    }
+    \\
+    {
+      \kres@defbul
       \kres@makeemcol
-    \end{flushright}\columnbreak
-  \end{multicols}
+    }
+    \par
+  }
 }
 %    \end{macrocode}
 % \end{macro}
