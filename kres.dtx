@@ -199,7 +199,34 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 \setlength{\partopsep}{0pt}
 %    \end{macrocode}
 %
-% We also disable page numbering. Resumes are generally one page so
+% We also create and set new length variables for use throughout the
+% class. Each length value controls a different type of spacing.
+% |\postnamespace| is inserted after the user's name at the top of the
+% document. |\presectionspace| is inserted before the title of each
+% section while |\sectiontextspace| controls how close the section
+% title is to its horizontal rule. The value of |\sectionrulethick|
+% controls the thickness of this rule. |\preentryspace| and
+% |\postentryspace| are inserted before and after each entry,
+% respectively. |\entrybodyindent| controls the hanging indent
+% inserted before entry description text.
+%    \begin{macrocode}
+\newlength{\postnamespace}
+\newlength{\presectionspace}
+\newlength{\sectiontextspace}
+\newlength{\sectionrulethick}
+\newlength{\preentryspace}
+\newlength{\postentryspace}
+\newlength{\entrybodyindent}
+\setlength{\postnamespace}{0.15em}
+\setlength{\presectionspace}{0.35em}
+\setlength{\sectiontextspace}{0.15em}
+\setlength{\sectionrulethick}{0.7pt}
+\setlength{\preentryspace}{0.05em}
+\setlength{\postentryspace}{0.1em}
+\setlength{\entrybodyindent}{0.2in}
+%    \end{macrocode}
+%
+% Finally, we disable page numbering. Resumes are generally one page so
 % the numbers are unnecessary.
 %    \begin{macrocode}
 \pagenumbering{gobble}
@@ -276,7 +303,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % font.
 %    \begin{macrocode}
 \NewDocumentCommand{\makename}{}{
-  {\centering\Large\textsc{\textbf{\kres@name}}\par\vspace{0.15em}}
+  {\centering\Large\textsc{\textbf{\kres@name}}\par\vspace{\postnamespace}}
 }
 \RenewDocumentCommand{\maketitle}{}{\makename}
 %    \end{macrocode}
@@ -441,12 +468,12 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % adds it to the PDF bookmarks.
 %    \begin{macrocode}
 \RenewDocumentCommand{\section}{m}{
-  \vspace{0.35em}
+  \vspace{\presectionspace}
   \outline{1}{#1}
   {
     \parskip=0pt
     \large\textsc{\textbf{#1}}\par
-    \vspace{0.15em}\nointerlineskip\rule{\textwidth}{0.7pt}
+    \vspace{\sectiontextspace}\nointerlineskip\rule{\textwidth}{\sectionrulethick}
     \par
   }
 }
@@ -484,7 +511,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
   {
     \IfValueT{#6}{\kres@smalleline{\IfValueT{#5}{#5}}{#6}}
   }
-  \IfBooleanF{#1}{\vspace{0.1em}}
+  \IfBooleanF{#1}{\vspace{\postentryspace}}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -500,11 +527,11 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 \NewDocumentEnvironment{entry}{mO{}O{}oo}
 {
   \entryhead*{#1}[#2][#3][#4][#5]
-  \begin{adjustwidth}{0.2in}{}
+  \begin{adjustwidth}{\entrybodyindent}{}
 }
 {
   \end{adjustwidth}\par
-  \vspace{0.1em}
+  \vspace{\postentryspace}
 }
 %    \end{macrocode}
 % \end{environment}
@@ -516,12 +543,12 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 %    \begin{macrocode}
 \NewDocumentEnvironment{inlineentry}{m}
 {
-  \vspace{0.05em}
+  \vspace{\preentryspace}
   \outline{2}{#1}
-  \hangindent=0.2in
+  \hangindent=\entrybodyindent
   \textbf{#1:}
 }
-{\par\vspace{0.1em}}
+{\par\vspace{\postentryspace}}
 %    \end{macrocode}
 % \end{environment}
 %
