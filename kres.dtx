@@ -155,6 +155,14 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % the title. Inline entries are best kept short, ideally a single
 % line.
 %
+% \DescribeMacro\entryhead
+% This macro may be used to insert a normal |entry| heading without
+% specifying any body text. In most cases users should prefer the
+% |entry| environment instead. The |\entryhead| macro has the same set
+% of arguments as the |entry| environment. It may also be used as
+% |\entryhead*| in which case it will not insert additional space
+% before or after the heading text.
+%
 % \section{Implementation}
 % \subsection{Class Configuration}
 % In this section we present the implementation of \textsf{kres}. We
@@ -459,6 +467,28 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\entryhead}
+% We expose the entry-header creation mechanism in case users want to
+% create their own headings while customizing the spacing of the body.
+% In most cases users should make use of the |entry| or |inlineentry|
+% environments defined below. Arguments are the same as to the |entry|
+% environment with an optional added star. If used as |\entryhead*| no
+% space either before or after the heading will be inserted.
+%    \begin{macrocode}
+\NewDocumentCommand{\entryhead}{smO{}O{}oo}{
+  \outline{2}{#2}
+  \textbf{#2} {\small \textsl{#4}} \hfill \textbf{#3}\par
+  \IfValueTF{#5}{
+    \kres@smalleline{#5}{\IfValueT{#6}{#6}}
+  }
+  {
+    \IfValueT{#6}{\kres@smalleline{\IfValueT{#5}{#5}}{#6}}
+  }
+  \IfBooleanF{#1}{\vspace{0.1em}}
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{environment}{entry}
 % With this we can define the |entry| environment. This
 % environment positions its five arguments into their respective
@@ -469,14 +499,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 %    \begin{macrocode}
 \NewDocumentEnvironment{entry}{mO{}O{}oo}
 {
-  \outline{2}{#1}
-  \textbf{#1} {\small \textsl{#3}} \hfill \textbf{#2}\par
-  \IfValueTF{#4}{
-    \kres@smalleline{#4}{\IfValueT{#5}{#5}}
-  }
-  {
-    \IfValueT{#5}{\kres@smalleline{\IfValueT{#4}{#4}}{#5}}
-  }
+  \entryhead*{#1}[#2][#3][#4][#5]
   \begin{adjustwidth}{0.2in}{}
 }
 {
