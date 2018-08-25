@@ -473,7 +473,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
   \vspace{\presectionspace}
   \outline{1}{#1}
   {
-    \parskip=0pt
+    \setlength{\parskip}{0pt}
     \large\textsc{\textbf{#1}}\par
     \vspace{\sectiontextspace}\nointerlineskip\rule{\textwidth}{\sectionrulethick}
     \par
@@ -547,7 +547,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 {
   \vspace{\preentryspace}
   \outline{2}{#1}
-  \hangindent=\entrybodyindent
+  \setlength{\hangindent}{\entrybodyindent}
   \textbf{#1:}
 }
 {\par\vspace{\postentryspace}}
