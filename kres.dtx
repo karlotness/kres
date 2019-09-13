@@ -353,6 +353,23 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % on the document setup. Though the contact formats vary they have
 % some common elements which we implement as macros.
 %
+% \begin{macro}{\kres@outline}
+
+% We will need a macro to write PDF bookmarks for each heading used
+% in the document. We will use the bookmarks feature of hyperref to
+% do this. This command needs a unique anchor though so we will use
+% a counter.
+%    \begin{macrocode}
+\newcounter{kres@outlinecount}
+%    \end{macrocode}
+% Now, with this counter we can make bookmarks.
+%    \begin{macrocode}
+\NewDocumentCommand{\kres@outline}{mm}{%
+  \pdfbookmark[#1]{#2}{outline.\thekres@outlinecount}%
+  \stepcounter{kres@outlinecount}}
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\kres@mkctactoln}
 % First, a macro which simply adds the contact information section as
 % a PDF bookmark with title ``Contact.''
