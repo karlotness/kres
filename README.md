@@ -23,7 +23,6 @@ depends on:
 - `article`
 - `fontenc`
 - `hyperref`
-- `navigator`
 - `libertine`
 - `multicol`
 - `microtype`
