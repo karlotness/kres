@@ -374,7 +374,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % First, a macro which simply adds the contact information section as
 % a PDF bookmark with title ``Contact.''
 %    \begin{macrocode}
-\NewDocumentCommand{\kres@mkctactoln}{}{\outline{1}{Contact}}
+\NewDocumentCommand{\kres@mkctactoln}{}{\kres@outline{0}{Contact}}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -488,7 +488,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 %    \begin{macrocode}
 \RenewDocumentCommand{\section}{m}{
   \vspace{\presectionspace}
-  \outline{1}{#1}
+  \kres@outline{0}{#1}
   {
     \setlength{\parskip}{0pt}
     \large\textsc{\textbf{#1}}\par
@@ -522,7 +522,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % space either before or after the heading will be inserted.
 %    \begin{macrocode}
 \NewDocumentCommand{\entryhead}{smO{}O{}oo}{
-  \outline{2}{#2}
+  \kres@outline{1}{#2}
   \textbf{#2} {\small \textsl{#4}} \hfill \textbf{#3}\par
   \IfValueTF{#5}{
     \kres@smalleline{#5}{\IfValueT{#6}{#6}}
@@ -563,7 +563,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 \NewDocumentEnvironment{inlineentry}{m}
 {
   \vspace{\preentryspace}
-  \outline{2}{#1}
+  \kres@outline{1}{#1}
   \setlength{\hangindent}{\entrybodyindent}
   \textbf{#1:}
 }
