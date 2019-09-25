@@ -87,6 +87,12 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % |\email|\marg{email} stores an email address. Some special
 % characters (underscores, etc.) may need to be escaped.
 %
+% \DescribeMacro\website
+% |\website|\marg{url} stores the author's web site address.
+% The URL will automatically have ``https://'' added to it,
+% unless the starred form of |\website*| is used, in which case
+% ``http://'' will be added.
+%
 % \subsection{Contact Information}
 % After opening the body of the document, the heading should be
 % added. This section contains the author's name and contact
@@ -233,6 +239,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % \begin{macro}{\author}
 % \begin{macro}{\phone}
 % \begin{macro}{\email}
+% \begin{macro}{\website}
 % Next, we define the macros used to store the author's contact
 % information. In general, these macros store this information in
 % other internal macros using the |kres@| prefix.
@@ -241,7 +248,13 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 \RenewDocumentCommand{\author}{}{\name}
 \NewDocumentCommand{\phone}{m}{\def\kres@phone{#1}}
 \NewDocumentCommand{\email}{m}{\def\kres@email{#1}}
+\NewDocumentCommand{\website}{sm}{%
+  \def\kres@displaysite{#2}%
+  \IfBooleanTF#1%
+  {\def\kres@linksite{http://#2}}%
+  {\def\kres@linksite{https://#2}}}
 %    \end{macrocode}
+% \end{macro}
 % \end{macro}
 % \end{macro}
 % \end{macro}
