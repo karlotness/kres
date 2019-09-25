@@ -396,10 +396,14 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % phone number and email.
 %    \begin{macrocode}
 \NewDocumentCommand{\kres@makeemcol}{}{%
-  \ifthenelse{\isundefined{\kres@phone}}%
-  {}{\makephone\\}%
+  \ifthenelse{\isundefined{\kres@linksite}}%
+  {}{\makewebsite\\}
   \ifthenelse{\isundefined{\kres@email}}%
   {}{\makeemail}%
+  \ifthenelse{\isundefined{\kres@email}\or\isundefined{\kres@phone}}%
+  {}{\ \textbullet\ }%
+  \ifthenelse{\isundefined{\kres@phone}}
+  {}{\makephone}%
 }
 %    \end{macrocode}
 % \end{macro}
