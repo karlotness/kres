@@ -336,6 +336,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 %
 % \begin{macro}{\makephone}
 % \begin{macro}{\makeemail}
+% \begin{macro}{\makewebsite}
 % Next, we specify macros to write out the author's phone number and
 % email. Both of these macros come in starred and un-starred
 % variants. Without a star, the macro will produce clickable
@@ -351,7 +352,13 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
   {\kres@email}%
   {\href{mailto:\kres@email}{\kres@email}}%
 }
+\NewDocumentCommand\makewebsite{s}{%
+  \IfBooleanTF#1%
+  {\kres@displaysite}%
+  {\href{\kres@linksite}{\kres@displaysite}}%
+}
 %    \end{macrocode}
+% \end{macro}
 % \end{macro}
 % \end{macro}
 %
