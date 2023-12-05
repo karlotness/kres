@@ -41,7 +41,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 {geometry}
 \usepackage[numbered]{hypdoc}
 
-\EnableCrossrefs
+\EnableCrossrefs{}
 \begin{document}
   \DocInput{kres.dtx}
 \end{document}
@@ -421,9 +421,9 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
   \begin{multicols}{3}
     \begin{flushleft}
       \kres@addra
-    \end{flushleft}\columnbreak
+    \end{flushleft}\columnbreak{}
       {\centering\kres@makeemcol\par}
-    \columnbreak
+    \columnbreak{}
     \begin{flushright}
       \kres@addrb
     \end{flushright}
