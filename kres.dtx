@@ -295,8 +295,7 @@ left=1.5in,right=1.5in,top=1in,bottom=1in,nohead]%
 % We then add it to the |\AtBeginDocument| hook.
 %    \begin{macrocode}
 \NewDocumentCommand{\kres@pdfmeta}{}{
-  \hypersetup
-  {
+  \hypersetup{
     pdfauthor={\kres@name},
     pdftitle={\kres@name}
   }
